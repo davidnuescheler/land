@@ -459,7 +459,22 @@ export function styleButtons() {
   });
 }
 
-function initializeNamespace() {
+async function decoratePage() {
+  loadTemplate();
+  document.title = document.title.split('<br>').join(' ');
+  fixImages();
+
+  if (window.pages.product) {
+    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
+  }
+
+  localizeFooter();
+}
+
+function initializeNamespaces() {
+  window.hlx = window.hlx || {};
+  window.hlx.dependencies = window.hlx.dependencies || [];
+
   const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
 
   if (pathSegments) {
@@ -472,52 +487,5 @@ function initializeNamespace() {
   }
 }
 
-// eslint-disable-next-line no-unused-vars
-export function decorateMain($main) {
-  // splitSections($main);
-  // wrapSections($main.querySelectorAll(':scope > div'));
-  // decorateButtons($main);
-  // fixIcons($main);
-  // checkWebpFeature(() => {
-  //   webpPolyfill($main);
-  // });
-  // decorateBlocks($main);
-  // decorateLinkedPictures($main);
-  // decorateSocialIcons($main);
-  // makeRelativeLinks($main);
-}
-
-async function decoratePage() {
-  loadTemplate();
-  // setTemplate();
-  // setTheme();
-  // await decorateTesting();
-  // if (sessionStorage.getItem('helix-font') === 'loaded') {
-  //   loadFonts();
-  // }
-
-  const $main = document.querySelector('main');
-  console.log('main: ', $main);
-  // decorateMain($main);
-  // decorateHeaderAndFooter();
-  // decorateHero();
-  // setLCPTrigger();
-  // displayEnv();
-  // displayOldLinkWarning();
-  // document.body.classList.add('appear');
-
-  document.title = document.title.split('<br>').join(' ');
-
-  fixImages();
-
-  addPublishDependencies();
-
-  if (window.pages.product) {
-    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
-  }
-
-  localizeFooter();
-}
-
-initializeNamespace();
+initializeNamespaces();
 decoratePage();
