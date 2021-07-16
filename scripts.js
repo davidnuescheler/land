@@ -387,6 +387,8 @@ async function loadTemplate() {
     $template.remove();
   }
 
+  loadCSS(`/templates/${template}/${template}.css`);
+
   console.log('/templates/$template}/${template.js: ', `/templates/${template}/${template}.js`);
   import(`/templates/${template}/${template}.js`).then((m) => {
     console.log('module fn: ', m, m.default);
@@ -396,7 +398,6 @@ async function loadTemplate() {
       m.default();
     }
   });
-  loadCSS(`/templates/${template}/${template}.css`);
 }
 
 /**
