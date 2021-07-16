@@ -386,7 +386,7 @@ async function decorateHome() {
   await insertSteps();
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
   await loadLocalHeader();
   externalLinks('header');
@@ -421,10 +421,4 @@ async function decoratePage() {
   if (document.getElementsByTagName('body')[0].classList.contains('photography-plan')) {
     document.querySelector('.progress').innerHTML = '';
   }
-}
-
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
 }

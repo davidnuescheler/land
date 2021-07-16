@@ -12,17 +12,22 @@
 
 module.exports = {
   root: true,
-  extends: '@adobe/helix',
   env: {
     browser: true,
+    es6: true,
   },
+  globals: {
+    loadJSModule: true,
+    loadCSS: true,
+  },
+  extends: '@adobe/helix',
   rules: {
     // allow reassigning param
     'no-param-reassign': [2, { props: false }],
     'linebreak-style': ['error', 'unix'],
-    'import/extensions': ['error', {
-      js: 'always',
-    }],
+    // 'import/extensions': ['error', {
+    //   js: 'always',
+    // }],
     'prefer-destructuring': ['error', {
       array: false,
       object: true,
@@ -32,7 +37,7 @@ module.exports = {
   },
   parser: '@babel/eslint-parser',
   parserOptions: {
-    allowImportExportEverywhere: true,
+    ecmaVersion: 2020,
     sourceType: 'module',
     requireConfigFile: false,
   },

@@ -288,7 +288,13 @@ function turnListSectionIntoCards() {
   });
 }
 
-async function decoratePage() {
+/**
+ * Default decorator.
+ * Executes immediately.
+ * Use named export `decorateAfterLoad` for module imports.
+ */
+export default async function decoratePage() {
+  console.log('decorate default');
   addDefaultClass('main>div');
   turnListSectionIntoCards();
   decorateTables();
@@ -309,8 +315,15 @@ async function decoratePage() {
   cardHeightEqualizer('.premiere .card .text');
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
+/**
+ * Alias to the default decorate function.
+ * Waits for dom to load before executing decoration.
+ */
+export function decorateAfterLoad() {
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', decoratePage);
+  } else {
+    decoratePage();
+  }
 }
+decorateAfterLoad(); // as script instead of module

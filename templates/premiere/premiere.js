@@ -11,7 +11,6 @@
  */
 
 // import { loadJSModule } from '../../scripts.js';
-/* global loadJSModule */
 
 function decorateYouTube() {
   const $vids = document.querySelectorAll('main div a[href^="https://www.youtube.com/"]');
@@ -46,7 +45,10 @@ function decorateVideoText() {
   });
 }
 
-decorateYouTube();
-decorateVideoText();
+export default function decorate() {
+  decorateYouTube();
+  decorateVideoText();
+  loadJSModule('/scripts/default.js');
+}
 
-loadJSModule('/scripts/default.js');
+// decorate();

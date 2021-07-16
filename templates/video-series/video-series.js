@@ -309,7 +309,7 @@ function turnListSectionIntoCards() {
   });
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
   turnListSectionIntoCards();
   decorateTables();
@@ -331,8 +331,8 @@ async function decoratePage() {
   cardHeightEqualizer('.premiere .card .text');
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

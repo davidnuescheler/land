@@ -17,7 +17,7 @@
 //   loadCSS,
 //   loadLocalHeader,
 // } from '../../scripts.js';
-/* global addDefaultClass, appearMain, externalLinks, loadCSS, loadLocalHeader */
+/* global addDefaultClass, appearMain, externalLinks, loadLocalHeader */
 
 async function fetchSheet() {
   window.hlx.dependencies.push('content.json');
@@ -109,7 +109,7 @@ async function decorateHome() {
   });
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
 
   await loadLocalHeader();
@@ -143,10 +143,4 @@ async function decoratePage() {
   window.pages.decorated = true;
   appearMain();
   decorateHome();
-}
-
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
 }

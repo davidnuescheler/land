@@ -29,7 +29,8 @@ global
   debounce,
   externalLinks,
   loadLocalHeader,
-  turnTableSectionIntoCards
+  turnTableSectionIntoCards,
+  toClassName
 */
 
 async function fetchSteps() {
@@ -376,10 +377,6 @@ function cleanUpBio() {
   `;
 }
 
-function toClassName(name) {
-  return name.toLowerCase().replace(/[^0-9a-z]/gi, '-');
-}
-
 function decorateTables() {
   document.querySelectorAll('main div.default>table').forEach(($table) => {
     const $cols = $table.querySelectorAll('thead tr th');
@@ -397,7 +394,7 @@ function decorateTables() {
   });
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
   decorateTables();
   await loadLocalHeader();
@@ -439,8 +436,8 @@ async function decoratePage() {
   cardHeightEqualizer('.card-content');
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

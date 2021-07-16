@@ -377,7 +377,7 @@ async function decorateHome() {
   decorateFooter();
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   wrapSections('main>div');
   addDefaultClass('main>div');
   await loadLocalHeader();
@@ -409,8 +409,8 @@ async function decoratePage() {
   document.body.classList.add(window.pages.locale);
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

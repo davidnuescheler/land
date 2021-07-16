@@ -17,7 +17,7 @@
 //   debounce,
 //   loadLocalHeader,
 // } from '../scripts.js';
-/* global addDefaultClass, appearMain, createTag, debounce, loadLocalHeader */
+/* global addDefaultClass, appearMain, createTag, debounce, loadLocalHeader, toClassName */
 
 // NOTE: lots of this looks repeated from default.js, could probably dry it up a bit
 
@@ -311,10 +311,6 @@ function turnListSectionIntoCards() {
       });
     }
   });
-}
-
-function toClassName(name) {
-  return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
 }
 
 function decorateTables() {

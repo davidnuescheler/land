@@ -374,7 +374,7 @@ function cleanUpBio() {
     `;
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
   decorateTables();
   await loadLocalHeader();
@@ -415,13 +415,3 @@ async function decoratePage() {
   externalLinks('main .section-wrapper:last-of-type');
   cardHeightEqualizer('.card-content');
 }
-
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
-
-// function toClassName(name) {
-//   return name.toLowerCase().replace(/[^0-9a-z]/gi, '-');
-// }

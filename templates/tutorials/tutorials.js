@@ -25,12 +25,9 @@ global
   classify,
   createTag,
   externalLinks,
-  insertLocalResource
+  insertLocalResource,
+  toClassName
 */
-
-function toClassName(name) {
-  return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
-}
 
 function turnTableSectionIntoCards($table, cols) {
   const $rows = $table.querySelectorAll('tbody tr');
@@ -319,7 +316,7 @@ function decorateVideoBlocks() {
   });
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
 
   await loadLocalHeader();
@@ -361,8 +358,8 @@ async function decoratePage() {
   appearMain();
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

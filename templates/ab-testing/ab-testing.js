@@ -10,9 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-// import { loadJSModule } from '../../scripts.js';
-/* global loadJSModule */
-
 function decorateABTests() {
   let runTest = true;
   let reason = '';
@@ -71,10 +68,10 @@ function decorateABTests() {
   }
 }
 
-async function delegatePageDecoration() {
+export default async function delegatePageDecoration() {
   decorateABTests();
   await loadJSModule('/templates/default/default.js');
   // decorateTables();
 }
 
-delegatePageDecoration();
+// delegatePageDecoration();

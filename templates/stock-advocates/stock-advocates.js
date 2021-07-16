@@ -457,7 +457,7 @@ export function webpPolyfill(element) {
   }
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   decorateTables();
   checkWebpFeature(() => {
     webpPolyfill(document);
@@ -481,8 +481,8 @@ async function decoratePage() {
   addAccessibility();
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

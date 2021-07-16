@@ -10,16 +10,92 @@
  * governing permissions and limitations under the License.
  */
 
-document.title = document.title.split('<br>').join(' ');
+/* eslint-disable no-use-before-define */
 
-export function addDefaultClass(element) {
+(() => {
+  /**
+   * For now, this script is included as a script.
+   * Explicitly set the common APIs on window.
+   */
+  window.addDefaultClass = addDefaultClass;
+  window.loadJSModule = loadJSModule;
+  window.setWidths = setWidths;
+  window.createTag = createTag;
+  window.insertLocalResource = insertLocalResource;
+  window.externalLinks = externalLinks;
+  window.loadCSS = loadCSS;
+  window.appearMain = appearMain;
+  window.classify = classify;
+  window.debounce = debounce;
+  window.toClassName = toClassName;
+  window.turnTableSectionIntoCards = turnTableSectionIntoCards;
+  window.loadLocalHeader = loadLocalHeader;
+  window.decorateTables = decorateTables;
+
+  document.title = document.title.split('<br>').join(' ');
+
+  fixImages();
+
+  const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
+
+  window.pages = {};
+
+  if (pathSegments) {
+    const product = pathSegments[0];
+    const locale = pathSegments[1];
+    const project = pathSegments[2];
+    window.pages = { product, locale, project };
+  }
+
+  window.hlx = window.hlx || {};
+  window.hlx.dependencies = [];
+
+  if (window.pages.product) {
+    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
+  }
+
+  if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', () => {
+      localizeFooter();
+      loadTemplate();
+      styleButtons();
+    });
+  } else {
+    localizeFooter();
+    loadTemplate();
+  }
+})();
+
+function debounce(func, wait, immediate) {
+  let timeout;
+  return function debounced(...args) {
+    const later = () => {
+      timeout = null;
+      if (!immediate) func.apply(this, args);
+    };
+    const callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(this, args);
+  };
+}
+
+/**
+ * Add `default` to classList of elements matching selector
+ * @param {string} element selector
+ */
+function addDefaultClass(element) {
   document.querySelectorAll(element).forEach(($div) => {
     $div.classList.add('default');
   });
 }
 
 // TODO: replace with dynamic imports
-export function loadJSModule(src) {
+/**
+ * Fetch and inject JS payload
+ * @param {string} src path
+ */
+function loadJSModule(src) {
   const module = document.createElement('script');
   module.setAttribute('type', 'module');
   module.setAttribute('src', src);
@@ -27,7 +103,10 @@ export function loadJSModule(src) {
 }
 
 // TODO: dedupe this with default.js
-export function setWidths() {
+/**
+ * setWidths
+ */
+function setWidths() {
   const sections = document.querySelectorAll('main .default');
   sections.forEach((section) => {
     const children = section.childNodes;
@@ -49,10 +128,10 @@ export function setWidths() {
 /**
  * Creates a tag with the given name and attributes.
  * @param {string} name The tag name
- * @param {object} attrs An object containing the attributes
+ * @param {Record<string,string>} attrs An object containing the attributes
  * @returns The new tag
  */
-export function createTag(name, attrs) {
+function createTag(name, attrs) {
   const el = document.createElement(name);
   if (typeof attrs === 'object') {
     for (const [key, value] of Object.entries(attrs)) {
@@ -62,7 +141,11 @@ export function createTag(name, attrs) {
   return el;
 }
 
-export async function insertLocalResource(type) {
+/**
+ * insertLocalResource
+ * @param {string} type
+ */
+async function insertLocalResource(type) {
   let url = '';
   if (window.pages.product && window.pages.locale) {
     url = `/${window.pages.product}/${window.pages.locale}/${type}.plain.html`;
@@ -86,9 +169,13 @@ export async function insertLocalResource(type) {
   document.querySelector(type).classList.add('appear');
 }
 
-/* link out to external links */
-// called inside decoratePage() twp3.js
-export function externalLinks(selector) {
+/**
+ * Link out to external links.
+ * Called inside decoratePage() twp3.js
+ *
+ * @param {string} selector
+ */
+function externalLinks(selector) {
   const element = document.querySelector(selector);
   const links = element.querySelectorAll('a[href]');
 
@@ -101,6 +188,10 @@ export function externalLinks(selector) {
   });
 }
 
+/**
+ * Externalize image sources contained within some element
+ * @param {HTMLElement} $div element
+ */
 function externalizeImageSources($div) {
   $div.querySelectorAll('img').forEach(($img) => {
     const { src } = $img;
@@ -113,13 +204,25 @@ function externalizeImageSources($div) {
   });
 }
 
-// TODO: dedupe with in-app.js, max.js, ete.js, learn.js, on24.js, tutorials.js
-export function toClassName(name) {
+/**
+ * Create class name from string.
+ *
+ * @param {string} name
+ * @returns {string}
+ */
+function toClassName(name) {
   return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
 }
 
 // TODO: dedupe with in-app.js, max.js, learn.js, tutorials.js
-export function turnTableSectionIntoCards($table, cols) {
+/**
+ * Convert table section into cards.
+ *
+ * @param {HTMLElement} $table element
+ * @param {string[]} cols
+ * @returns {HTMLElement}
+ */
+function turnTableSectionIntoCards($table, cols) {
   const $rows = $table.querySelectorAll('tbody tr');
   const $cards = createTag('div', { class: `cards ${cols.join('-')}` });
   $rows.forEach(($tr) => {
@@ -160,7 +263,10 @@ export function turnTableSectionIntoCards($table, cols) {
 // TODO: dedupe with in-app.js, max.js,
 //    templates/default.js, learn.js, on24.js,
 //    stock-advocates.js, tutorials.js, xd.js
-export function decorateTables() {
+/**
+ * Decorate tables
+ */
+function decorateTables() {
   document.querySelectorAll('main div>table').forEach(($table) => {
     const $cols = $table.querySelectorAll('thead tr th');
     const cols = Array.from($cols).map((e) => toClassName(e.innerHTML));
@@ -179,9 +285,13 @@ export function decorateTables() {
 }
 
 // TODO: dedupe with stock-advocates.js, tutorials.js
-export async function loadLocalHeader() {
+/**
+ * Load localized header
+ */
+async function loadLocalHeader() {
   decorateTables();
   const $inlineHeader = document.querySelector('main div.header-block');
+  console.log('inlineHeader: ', document, $inlineHeader);
   if ($inlineHeader) {
     const $header = document.querySelector('header');
     $inlineHeader.childNodes.forEach((e, i) => {
@@ -211,7 +321,7 @@ export async function loadLocalHeader() {
  * @param {string} cls css class to be added
  * @param {number} parent uplevel
  */
-export function classify(qs, cls, parent) {
+function classify(qs, cls, parent) {
   document.querySelectorAll(qs).forEach(($e) => {
     let $root = $e;
     for (let p = parent; p > 0; p -= 1) {
@@ -221,24 +331,10 @@ export function classify(qs, cls, parent) {
   });
 }
 
-export const debounce = (func, wait, immediate) => {
-  let timeout;
-  return function debounced(...args) {
-    const later = () => {
-      timeout = null;
-      if (!immediate) func.apply(this, args);
-    };
-    const callNow = immediate && !timeout;
-    clearTimeout(timeout);
-    timeout = setTimeout(later, wait);
-    if (callNow) func.apply(this, args);
-  };
-};
-
 /**
  * Checks if <main> is ready to appear
  */
-export function appearMain() {
+function appearMain() {
   if (window.pages.familyCssLoaded && window.pages.decorated) {
     const p = window.pages;
     const pathSplits = window.location.pathname.split('/');
@@ -253,7 +349,7 @@ export function appearMain() {
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-export function loadCSS(href) {
+function loadCSS(href) {
   const link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('href', href);
@@ -269,7 +365,10 @@ export function loadCSS(href) {
   document.head.appendChild(link);
 }
 
-function loadTemplate() {
+/**
+ * Load the template
+ */
+async function loadTemplate() {
   document.querySelectorAll('table th').forEach(($th) => {
     if ($th.textContent.toLowerCase().trim() === 'template') {
       const $table = $th.closest('table');
@@ -288,10 +387,21 @@ function loadTemplate() {
     $template.remove();
   }
 
-  loadJSModule(`/templates/${template}/${template}.js`);
+  console.log('/templates/$template}/${template.js: ', `/templates/${template}/${template}.js`);
+  import(`/templates/${template}/${template}.js`).then((m) => {
+    console.log('module fn: ', m, m.default);
+    if (document.readyState === 'loading') {
+      window.addEventListener('DOMContentLoaded', m.default());
+    } else {
+      m.default();
+    }
+  });
   loadCSS(`/templates/${template}/${template}.css`);
 }
 
+/**
+ * Insert localized footer
+ */
 function localizeFooter() {
   const lang = window.pages.locale;
 
@@ -319,6 +429,9 @@ function localizeFooter() {
   }
 }
 
+/**
+ * Resize images according to screen width.
+ */
 function fixImages() {
   const screenWidth = window.screen.availWidth;
   const imgSizes = [375, 768, 1000];
@@ -363,6 +476,12 @@ function fixImages() {
   observer.observe(document, { childList: true, subtree: true });
 }
 
+/**
+ * Style all elements matching selector `main a`.
+ * Set class tokens to `button primary`.
+ *
+ * @returns {void}
+ */
 function styleButtons() {
   const links = document.querySelectorAll('main a');
   if (!document.querySelectorAll('main a')) return;
@@ -376,66 +495,3 @@ function styleButtons() {
     }
   });
 }
-
-function run() {
-  fixImages();
-
-  const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
-
-  window.pages = {};
-
-  if (pathSegments) {
-    const product = pathSegments[0];
-    const locale = pathSegments[1];
-    const project = pathSegments[2];
-    window.pages = { product, locale, project };
-  }
-
-  window.hlx = window.hlx || {};
-  window.hlx.dependencies = [];
-
-  if (window.pages.product) {
-    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
-  }
-
-  if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => {
-      localizeFooter();
-      loadTemplate();
-      styleButtons();
-    });
-  } else {
-    localizeFooter();
-    loadTemplate();
-  }
-}
-
-/**
- * TODO: remove this switch for modules.
- * We can leave the functions on window until
- * everything is moved over and tested.
- *
- * For now, this script is included as a module,
- * but also writes to window.
- * Gives us the ability to use both ways in the interrim.
- */
-
-// non-module, explicitly add functions to global scope
-window.addDefaultClass = addDefaultClass;
-window.loadJSModule = loadJSModule;
-window.setWidths = setWidths;
-window.createTag = createTag;
-window.insertLocalResource = insertLocalResource;
-window.externalLinks = externalLinks;
-window.loadCSS = loadCSS;
-window.appearMain = appearMain;
-window.classify = classify;
-window.debounce = debounce;
-window.toClassName = toClassName;
-window.turnTableSectionIntoCards = turnTableSectionIntoCards;
-window.loadLocalHeader = loadLocalHeader;
-window.decorateTables = decorateTables;
-run();
-
-// module
-// export default run;

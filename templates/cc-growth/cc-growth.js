@@ -22,7 +22,7 @@
 //   loadJSModule,
 //   loadLocalHeader,
 // } from '../../scripts.js';
-/* global addDefaultClass, appearMain, createTag, debounce, loadJSModule, loadLocalHeader */
+/* global addDefaultClass, appearMain, createTag, debounce, loadLocalHeader */
 
 async function submitSheetForm($form, sheetid, thankyou) {
   const formsink = 'https://script.google.com/macros/s/AKfycbxWFwI-qExw0Tg_LJvdisSYODFw35m3L8M5HdumPOufmArmRIEh/exec';
@@ -258,7 +258,7 @@ function paramHelper() {
   }
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   addDefaultClass('main>div');
   wrapSections('main>div');
   await loadLocalHeader();
@@ -269,10 +269,10 @@ async function decoratePage() {
   appearMain();
 }
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }
 
 loadJSModule('../../templates/cc-growth/icons.js');

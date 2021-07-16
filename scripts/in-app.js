@@ -16,7 +16,7 @@
 //   loadLocalHeader,
 //   appearMain,
 // } from '../scripts.js';
-/* global createTag, addDefaultClass, loadLocalHeader, appearMain */
+/* global createTag, addDefaultClass, loadLocalHeader, appearMain, toClassName */
 
 function wrapSections(element) {
   document.querySelectorAll(element).forEach(($div) => {
@@ -105,10 +105,6 @@ function dropDownMenu() {
 //     }
 //   });
 // }
-
-function toClassName(name) {
-  return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
-}
 
 function turnTableSectionIntoCards($table, cols) {
   const $rows = $table.querySelectorAll('tbody tr');

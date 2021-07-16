@@ -19,7 +19,7 @@
 //   loadLocalHeader,
 //   toClassName,
 // } from '../../scripts.js';
-/* global appearMain, createTag, debounce, loadCSS, loadJSModule, loadLocalHeader, toClassName */
+/* global appearMain, createTag, debounce, loadLocalHeader, toClassName */
 
 function styleNav() {
   const parent = document.querySelector('header');
@@ -490,7 +490,7 @@ function decorateLinkTexting() {
   }
 }
 
-async function decoratePage() {
+export default async function decoratePage() {
   decorateTables();
   wrapSections('main>div');
   decorateBlocks();
@@ -543,8 +543,8 @@ async function decoratePage() {
 
 window.addEventListener('load', () => document.body.classList.add('loaded'));
 
-if (document.readyState === 'loading') {
-  window.addEventListener('DOMContentLoaded', decoratePage);
-} else {
-  decoratePage();
-}
+// if (document.readyState === 'loading') {
+//   window.addEventListener('DOMContentLoaded', decoratePage);
+// } else {
+//   decoratePage();
+// }

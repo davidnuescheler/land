@@ -11,6 +11,9 @@
  */
 
 // import { loadJSModule } from '../../scripts.js';
-/* global loadJSModule */
+// /* global loadJSModule */
+import { decorateAfterLoad } from '../../scripts/default';
 
-loadJSModule('/scripts/default.js');
+decorateAfterLoad();
+
+// loadJSModule('/scripts/default.js');
