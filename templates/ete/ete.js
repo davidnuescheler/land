@@ -364,6 +364,7 @@ function cleanUpBio() {
 }
 
 export default async function decoratePage() {
+  console.log('ete decorate');
   addDefaultClass('main>div');
   decorateTables();
   await loadLocalHeader();

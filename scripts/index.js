@@ -356,6 +356,7 @@ export async function loadTemplate() {
   }
 
   const basePath = `/templates/${template}/${template}`;
+  console.log(`load template ${basePath}`);
   loadCSS(`${basePath}.css`);
   import(`${basePath}.js`).then(({ default: run }) => {
     run();
@@ -487,5 +488,6 @@ function initializeNamespaces() {
   }
 }
 
+console.log('script index');
 initializeNamespaces();
 decoratePage();
