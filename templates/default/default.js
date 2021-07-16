@@ -10,16 +10,15 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   appearMain,
-//   createTag,
-//   debounce,
-//   loadCSS,
-//   loadJSModule,
-//   loadLocalHeader,
-//   toClassName,
-// } from '../../scripts.js';
-/* global appearMain, createTag, debounce, loadLocalHeader, toClassName */
+import {
+  appearMain,
+  createTag,
+  debounce,
+  loadCSS,
+  loadJSModule,
+  loadLocalHeader,
+  toClassName,
+} from '../../scripts/index.js';
 
 function styleNav() {
   const parent = document.querySelector('header');
@@ -367,9 +366,9 @@ async function decorateBlocks() {
         const config = readBlockConfig($block);
 
         window.formConfig = {
-          form_sheet: config['form-data-submission'],
-          form_redirect: config['form-redirect'] ? config['form-redirect'] : 'thank-you',
-          form_to_use: config['form-definition'],
+          sheet: config['form-data-submission'],
+          redirect: config['form-redirect'] ? config['form-redirect'] : 'thank-you',
+          definition: config['form-definition'],
         };
 
         const tag = document.createElement('script');

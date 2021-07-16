@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+import { loadJSModule } from '../../scripts/index.js';
+
 function decorateABTests() {
   let runTest = true;
   let reason = '';

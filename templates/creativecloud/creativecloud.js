@@ -10,10 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-// import { loadJSModule } from '../../scripts.js';
-// /* global loadJSModule */
 import { decorateAfterLoad } from '../../scripts/default';
 
 decorateAfterLoad();
-
-// loadJSModule('/scripts/default.js');

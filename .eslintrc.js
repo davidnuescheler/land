@@ -16,10 +16,6 @@ module.exports = {
     browser: true,
     es6: true,
   },
-  globals: {
-    loadJSModule: true,
-    loadCSS: true,
-  },
   extends: '@adobe/helix',
   rules: {
     // allow reassigning param

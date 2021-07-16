@@ -10,11 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
-// import { toClassName } from '../../scripts.js';
-/* global toClassName */
-
-// TODO: Use import instead of assigning to window?
-/* global setupForm */
+import { toClassName } from '../../scripts/index.js';
+import setupForm from './form';
 
 const formMarkup = document.createElement('div');
 formMarkup.className = 'wg-form-container form-container';
@@ -29,16 +26,13 @@ formMarkup.innerHTML = `
 
 document.querySelector('.form').innerHTML = formMarkup.outerHTML;
 
-const tag = document.createElement('script');
-tag.src = '/templates/default/form.js';
-document.getElementsByTagName('body')[0].appendChild(tag);
+// const tag = document.createElement('script');
+// tag.src = '/templates/default/form.js';
+// document.getElementsByTagName('body')[0].appendChild(tag);
 
 // const $formContainer = document.querySelector('.wg-form-container');
 const $wgForm = document.getElementById('wg-form');
 let hasPageBreak = 0;
-
-// eslint-disable-next-line camelcase
-// const { form_redirect, form_sheet, form_to_use } = window.formConfig;
 
 // const formType = document.querySelectorAll('main p');
 const formToUse = '';

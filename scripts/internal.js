@@ -10,8 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-// import { appearMain } from '../scripts.js';
-/* global appearMain */
+import { appearMain } from './index.js';
 
 function decoratePage() {
   window.pages.decorated = true;

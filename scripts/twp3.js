@@ -10,17 +10,24 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   addDefaultClass,
-//   appearMain,
-//   classify,
-//   createTag,
-//   externalLinks,
-//   loadLocalHeader,
-// } from '../scripts.js';
-/* global addDefaultClass, appearMain, classify, createTag, externalLinks, loadLocalHeader, */
+import {
+  addDefaultClass,
+  appearMain,
+  classify,
+  createTag,
+  externalLinks,
+  loadLocalHeader,
+} from './index.js';
 
-/* eslint-disable import/prefer-default-export */
+// eslint-disable-next-line import/prefer-default-export
+export function playVideo() {
+  document.getElementById('placeholder').classList.add('hidden');
+  const $video = document.getElementById('video');
+  $video.classList.remove('hidden');
+  $video.classList.remove('hidden');
+  $video.play();
+  $video.setAttribute('controls', true);
+}
 
 async function fetchSteps() {
   window.hlx.dependencies.push('steps.json');
@@ -107,15 +114,6 @@ function dropDownMenu() {
     $header.querySelector('ul').style.display = 'none';
     $header.classList.remove('nav-showing');
   }
-}
-
-export function playVideo() {
-  document.getElementById('placeholder').classList.add('hidden');
-  const $video = document.getElementById('video');
-  $video.classList.remove('hidden');
-  $video.classList.remove('hidden');
-  $video.play();
-  $video.setAttribute('controls', true);
 }
 
 async function decorateStep() {

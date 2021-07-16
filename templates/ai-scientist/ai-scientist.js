@@ -10,14 +10,13 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   addDefaultClass,
-//   appearMain,
-//   createTag,
-//   externalLinks,
-//   loadLocalHeader,
-// } from '../../scripts.js';
-/* global addDefaultClass, appearMain, createTag, externalLinks, loadLocalHeader */
+import {
+  addDefaultClass,
+  appearMain,
+  createTag,
+  externalLinks,
+  loadLocalHeader,
+} from '../../scripts/index.js';
 
 // NOTE: lots of this looks reused from scripts/twp...js
 

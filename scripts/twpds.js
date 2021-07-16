@@ -10,20 +10,18 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   addDefaultClass,
-//   appearMain,
-//   classify,
-//   createTag,
-//   loadLocalHeader,
-// } from '../scripts.js';
-/* global addDefaultClass, appearMain, classify, createTag, loadLocalHeader, */
-
-/* eslint-disable import/prefer-default-export */
+import {
+  addDefaultClass,
+  appearMain,
+  classify,
+  createTag,
+  loadLocalHeader,
+} from './index.js';
 
 // TODO: Remove this, see twp.js comment
 /* eslint-disable no-await-in-loop */
 
+// eslint-disable-next-line import/prefer-default-export
 export function playVideo() {
   document.getElementById('placeholder').classList.add('hidden');
   const $video = document.getElementById('video');

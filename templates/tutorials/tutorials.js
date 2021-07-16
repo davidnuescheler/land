@@ -10,24 +10,15 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   addDefaultClass,
-//   appearMain,
-//   classify,
-//   createTag,
-//   externalLinks,
-//   insertLocalResource,
-// } from '../../scripts.js';
-/*
-global
+import {
   addDefaultClass,
   appearMain,
   classify,
   createTag,
   externalLinks,
   insertLocalResource,
-  toClassName
-*/
+  toClassName,
+} from '../../scripts/index.js';
 
 function turnTableSectionIntoCards($table, cols) {
   const $rows = $table.querySelectorAll('tbody tr');

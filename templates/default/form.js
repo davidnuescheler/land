@@ -1,15 +1,4 @@
 /*
- * Copyright 2020 Adobe. All rights reserved.
- * This file is licensed to you under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License. You may obtain a copy
- * of the License at http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under
- * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR REPRESENTATIONS
- * OF ANY KIND, either express or implied. See the License for the specific language
- * governing permissions and limitations under the License.
- */
-/*
  * Copyright 2021 Adobe. All rights reserved.
  * This file is licensed to you under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License. You may obtain a copy
@@ -21,15 +10,21 @@
  * governing permissions and limitations under the License.
  */
 
-// TODO: Unsnake the form global variables once found..
-/* eslint-disable camelcase */
-/* global form_sheet, form_redirect */
-
-window.setupForm = ({
+/**
+ * @param {Object} conf Form config object
+ * @param {string} conf.formId Form ID
+ * @param {string} conf.containerClass Container class
+ * @param {() => boolean} conf.preValidation Hook called before validation
+ */
+export default function setupForm({
   formId,
   containerClass = 'form-container',
   preValidation = () => true,
-}) => {
+}) {
+  // TODO: Move these to arguments, unless there's a reason for global here.
+  // Seems like embedded components use this, maybe dependent on the globals.
+  const { sheet, redirect: thankyou } = window.formConfig;
+
   const $formContainer = document.querySelector(`.${containerClass}`);
   const $form = document.getElementById(formId);
 
@@ -70,9 +65,6 @@ window.setupForm = ({
     });
   }
 
-  // console.log(form_sheet ,'here')
-  const sheet = form_sheet;
-  const thankyou = form_redirect;
   // $formContainer.parentElement.querySelectorAll('a').forEach(($a) => {
   //   if ($a.textContent.toLowerCase() === 'sheet') {
   //     sheet = $a.href;
@@ -197,6 +189,7 @@ window.setupForm = ({
   $form.addEventListener('submit', async (evt) => {
     evt.preventDefault();
     if (await submit()) {
+      // TODO: fix this.. redirect to path? URL?
       window.location = thankyou;
     }
   });
@@ -239,4 +232,4 @@ window.setupForm = ({
     $tools.append(createButton('Setup / Test', setup));
     $formContainer.append($tools);
   }
-};
+}

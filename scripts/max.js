@@ -10,14 +10,14 @@
  * governing permissions and limitations under the License.
  */
 
-// import {
-//   addDefaultClass,
-//   appearMain,
-//   createTag,
-//   debounce,
-//   loadLocalHeader,
-// } from '../scripts.js';
-/* global addDefaultClass, appearMain, createTag, debounce, loadLocalHeader, toClassName */
+import {
+  addDefaultClass,
+  appearMain,
+  createTag,
+  debounce,
+  loadLocalHeader,
+  toClassName,
+} from './index.js';
 
 // NOTE: lots of this looks repeated from default.js, could probably dry it up a bit
 

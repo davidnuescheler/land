@@ -10,8 +10,6 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-disable import/prefer-default-export */
-
 // TODO: Remove this, change to Promise.all in insertSteps()
 // first need to ask about the done condition.
 // Also, figure out the difference between each of the twp scripts, possibly share some code.
@@ -23,9 +21,9 @@ import {
   loadLocalHeader,
   classify,
   appearMain,
-} from '../scripts.js';
+} from './index.js';
 
-export function playVideo() {
+function playVideo() {
   document.getElementById('placeholder').classList.add('hidden');
   const $video = document.getElementById('video');
   $video.classList.remove('hidden');

@@ -10,63 +10,32 @@
  * governing permissions and limitations under the License.
  */
 
-/* eslint-disable no-use-before-define */
-
-(() => {
-  /**
-   * For now, this script is included as a script.
-   * Explicitly set the common APIs on window.
-   */
-  window.addDefaultClass = addDefaultClass;
-  window.loadJSModule = loadJSModule;
-  window.setWidths = setWidths;
-  window.createTag = createTag;
-  window.insertLocalResource = insertLocalResource;
-  window.externalLinks = externalLinks;
-  window.loadCSS = loadCSS;
-  window.appearMain = appearMain;
-  window.classify = classify;
-  window.debounce = debounce;
-  window.toClassName = toClassName;
-  window.turnTableSectionIntoCards = turnTableSectionIntoCards;
-  window.loadLocalHeader = loadLocalHeader;
-  window.decorateTables = decorateTables;
-
-  document.title = document.title.split('<br>').join(' ');
-
-  fixImages();
-
-  const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
-
-  window.pages = {};
-
-  if (pathSegments) {
-    const product = pathSegments[0];
-    const locale = pathSegments[1];
-    const project = pathSegments[2];
-    window.pages = { product, locale, project };
+/**
+ * Add dependency urls that should be published with Sidekick.
+ * @param {string | string[]} url
+ */
+export function addPublishDependencies(url) {
+  if (!Array.isArray(url)) {
+    // eslint-disable-next-line no-param-reassign
+    url = [url];
   }
-
   window.hlx = window.hlx || {};
-  window.hlx.dependencies = [];
-
-  if (window.pages.product) {
-    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
-  }
-
-  if (document.readyState === 'loading') {
-    window.addEventListener('DOMContentLoaded', () => {
-      localizeFooter();
-      loadTemplate();
-      styleButtons();
-    });
+  if (window.hlx.dependencies && Array.isArray(window.hlx.dependencies)) {
+    window.hlx.dependencies.concat(url);
   } else {
-    localizeFooter();
-    loadTemplate();
+    window.hlx.dependencies = url;
   }
-})();
+}
 
-function debounce(func, wait, immediate) {
+/**
+ * Get debounced version of function.
+ *
+ * @param {Function} func Function to call
+ * @param {number} wait Wait
+ * @param {boolean} immediate Immedaite
+ * @returns {Function}
+ */
+export function debounce(func, wait, immediate) {
   let timeout;
   return function debounced(...args) {
     const later = () => {
@@ -84,18 +53,17 @@ function debounce(func, wait, immediate) {
  * Add `default` to classList of elements matching selector
  * @param {string} element selector
  */
-function addDefaultClass(element) {
+export function addDefaultClass(element) {
   document.querySelectorAll(element).forEach(($div) => {
     $div.classList.add('default');
   });
 }
 
-// TODO: replace with dynamic imports
 /**
  * Fetch and inject JS payload
  * @param {string} src path
  */
-function loadJSModule(src) {
+export function loadJSModule(src) {
   const module = document.createElement('script');
   module.setAttribute('type', 'module');
   module.setAttribute('src', src);
@@ -106,7 +74,7 @@ function loadJSModule(src) {
 /**
  * setWidths
  */
-function setWidths() {
+export function setWidths() {
   const sections = document.querySelectorAll('main .default');
   sections.forEach((section) => {
     const children = section.childNodes;
@@ -131,7 +99,7 @@ function setWidths() {
  * @param {Record<string,string>} attrs An object containing the attributes
  * @returns The new tag
  */
-function createTag(name, attrs) {
+export function createTag(name, attrs) {
   const el = document.createElement(name);
   if (typeof attrs === 'object') {
     for (const [key, value] of Object.entries(attrs)) {
@@ -145,7 +113,7 @@ function createTag(name, attrs) {
  * insertLocalResource
  * @param {string} type
  */
-async function insertLocalResource(type) {
+export async function insertLocalResource(type) {
   let url = '';
   if (window.pages.product && window.pages.locale) {
     url = `/${window.pages.product}/${window.pages.locale}/${type}.plain.html`;
@@ -175,7 +143,7 @@ async function insertLocalResource(type) {
  *
  * @param {string} selector
  */
-function externalLinks(selector) {
+export function externalLinks(selector) {
   const element = document.querySelector(selector);
   const links = element.querySelectorAll('a[href]');
 
@@ -192,7 +160,7 @@ function externalLinks(selector) {
  * Externalize image sources contained within some element
  * @param {HTMLElement} $div element
  */
-function externalizeImageSources($div) {
+export function externalizeImageSources($div) {
   $div.querySelectorAll('img').forEach(($img) => {
     const { src } = $img;
     if (src.startsWith('https://hlx.blob.core.windows.net/external/')) {
@@ -210,7 +178,7 @@ function externalizeImageSources($div) {
  * @param {string} name
  * @returns {string}
  */
-function toClassName(name) {
+export function toClassName(name) {
   return (name.toLowerCase().replace(/[^0-9a-z]/gi, '-'));
 }
 
@@ -222,7 +190,7 @@ function toClassName(name) {
  * @param {string[]} cols
  * @returns {HTMLElement}
  */
-function turnTableSectionIntoCards($table, cols) {
+export function turnTableSectionIntoCards($table, cols) {
   const $rows = $table.querySelectorAll('tbody tr');
   const $cards = createTag('div', { class: `cards ${cols.join('-')}` });
   $rows.forEach(($tr) => {
@@ -266,7 +234,7 @@ function turnTableSectionIntoCards($table, cols) {
 /**
  * Decorate tables
  */
-function decorateTables() {
+export function decorateTables() {
   document.querySelectorAll('main div>table').forEach(($table) => {
     const $cols = $table.querySelectorAll('thead tr th');
     const cols = Array.from($cols).map((e) => toClassName(e.innerHTML));
@@ -288,7 +256,7 @@ function decorateTables() {
 /**
  * Load localized header
  */
-async function loadLocalHeader() {
+export async function loadLocalHeader() {
   decorateTables();
   const $inlineHeader = document.querySelector('main div.header-block');
   console.log('inlineHeader: ', document, $inlineHeader);
@@ -321,7 +289,7 @@ async function loadLocalHeader() {
  * @param {string} cls css class to be added
  * @param {number} parent uplevel
  */
-function classify(qs, cls, parent) {
+export function classify(qs, cls, parent) {
   document.querySelectorAll(qs).forEach(($e) => {
     let $root = $e;
     for (let p = parent; p > 0; p -= 1) {
@@ -334,13 +302,13 @@ function classify(qs, cls, parent) {
 /**
  * Checks if <main> is ready to appear
  */
-function appearMain() {
+export function appearMain() {
   if (window.pages.familyCssLoaded && window.pages.decorated) {
-    const p = window.pages;
     const pathSplits = window.location.pathname.split('/');
     const pageName = pathSplits[pathSplits.length - 1].split('.')[0];
-    const classes = [p.product, p.family, p.project, pageName];
-    classes.forEach((e) => (e ? document.body.classList.add(e) : false));
+    const p = window.pages;
+    const classes = [p.product, p.family, p.project, pageName].filter((c) => !!c);
+    document.body.classList.add(...classes);
     classify('main', 'appear');
   }
 }
@@ -349,7 +317,7 @@ function appearMain() {
  * Loads a CSS file.
  * @param {string} href The path to the CSS file
  */
-function loadCSS(href) {
+export function loadCSS(href) {
   const link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('href', href);
@@ -368,7 +336,7 @@ function loadCSS(href) {
 /**
  * Load the template
  */
-async function loadTemplate() {
+export async function loadTemplate() {
   document.querySelectorAll('table th').forEach(($th) => {
     if ($th.textContent.toLowerCase().trim() === 'template') {
       const $table = $th.closest('table');
@@ -387,16 +355,10 @@ async function loadTemplate() {
     $template.remove();
   }
 
-  loadCSS(`/templates/${template}/${template}.css`);
-
-  console.log('/templates/$template}/${template.js: ', `/templates/${template}/${template}.js`);
-  import(`/templates/${template}/${template}.js`).then((m) => {
-    console.log('module fn: ', m, m.default);
-    if (document.readyState === 'loading') {
-      window.addEventListener('DOMContentLoaded', m.default());
-    } else {
-      m.default();
-    }
+  const basePath = `/templates/${template}/${template}`;
+  loadCSS(`${basePath}.css`);
+  import(`${basePath}.js`).then(({ default: run }) => {
+    run();
   });
 }
 
@@ -483,7 +445,7 @@ function fixImages() {
  *
  * @returns {void}
  */
-function styleButtons() {
+export function styleButtons() {
   const links = document.querySelectorAll('main a');
   if (!document.querySelectorAll('main a')) return;
   links.forEach((link) => {
@@ -496,3 +458,66 @@ function styleButtons() {
     }
   });
 }
+
+function initializeNamespace() {
+  const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
+
+  if (pathSegments) {
+    const product = pathSegments[0];
+    const locale = pathSegments[1];
+    const project = pathSegments[2];
+    window.pages = { product, locale, project };
+  } else {
+    window.pages = {};
+  }
+}
+
+// eslint-disable-next-line no-unused-vars
+export function decorateMain($main) {
+  // splitSections($main);
+  // wrapSections($main.querySelectorAll(':scope > div'));
+  // decorateButtons($main);
+  // fixIcons($main);
+  // checkWebpFeature(() => {
+  //   webpPolyfill($main);
+  // });
+  // decorateBlocks($main);
+  // decorateLinkedPictures($main);
+  // decorateSocialIcons($main);
+  // makeRelativeLinks($main);
+}
+
+async function decoratePage() {
+  loadTemplate();
+  // setTemplate();
+  // setTheme();
+  // await decorateTesting();
+  // if (sessionStorage.getItem('helix-font') === 'loaded') {
+  //   loadFonts();
+  // }
+
+  const $main = document.querySelector('main');
+  console.log('main: ', $main);
+  // decorateMain($main);
+  // decorateHeaderAndFooter();
+  // decorateHero();
+  // setLCPTrigger();
+  // displayEnv();
+  // displayOldLinkWarning();
+  // document.body.classList.add('appear');
+
+  document.title = document.title.split('<br>').join(' ');
+
+  fixImages();
+
+  addPublishDependencies();
+
+  if (window.pages.product) {
+    document.getElementById('favicon').href = `/icons/${window.pages.product}.svg`;
+  }
+
+  localizeFooter();
+}
+
+initializeNamespace();
+decoratePage();

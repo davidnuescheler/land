@@ -13,4 +13,3 @@
 import { decorateAfterLoad } from '../../scripts/default';
 
 decorateAfterLoad();
-// loadJSModule('/scripts/default.js');
