@@ -10,6 +10,8 @@
  * governing permissions and limitations under the License.
  */
 
+import { emit, initializeNamespaces } from './namespace';
+
 /**
  * Add dependency urls that should be published with Sidekick.
  * @param {string | string[]} url
@@ -61,12 +63,13 @@ export function addDefaultClass(element) {
 
 /**
  * Fetch and inject JS payload
- * @param {string} src path
+ * @param {string} href path
  */
-export function loadJSModule(src) {
+export function loadJSModule(href) {
+  emit('preLoadJs', { href });
   const module = document.createElement('script');
   module.setAttribute('type', 'module');
-  module.setAttribute('src', src);
+  module.setAttribute('src', href);
   document.head.appendChild(module);
 }
 
@@ -310,6 +313,7 @@ export function appearMain() {
     const classes = [p.product, p.family, p.project, pageName].filter((c) => !!c);
     document.body.classList.add(...classes);
     classify('main', 'appear');
+    emit('mainVisible');
   }
 }
 
@@ -318,6 +322,8 @@ export function appearMain() {
  * @param {string} href The path to the CSS file
  */
 export function loadCSS(href) {
+  emit('preLoadCss', { href });
+
   const link = document.createElement('link');
   link.setAttribute('rel', 'stylesheet');
   link.setAttribute('href', href);
@@ -356,10 +362,14 @@ export async function loadTemplate() {
   }
 
   const basePath = `/templates/${template}/${template}`;
+  emit('preLoadTemplate', { basePath });
+
   console.log(`load template ${basePath}`);
   loadCSS(`${basePath}.css`);
   import(`${basePath}.js`).then(({ default: run }) => {
+    emit('postLoadTemplate', { basePath });
     run();
+    emit('postRunTemplate', { basePath });
   });
 }
 
@@ -470,22 +480,6 @@ async function decoratePage() {
   }
 
   localizeFooter();
-}
-
-function initializeNamespaces() {
-  window.hlx = window.hlx || {};
-  window.hlx.dependencies = window.hlx.dependencies || [];
-
-  const pathSegments = window.location.pathname.match(/[\w-]+(?=\/)/g);
-
-  if (pathSegments) {
-    const product = pathSegments[0];
-    const locale = pathSegments[1];
-    const project = pathSegments[2];
-    window.pages = { product, locale, project };
-  } else {
-    window.pages = {};
-  }
 }
 
 console.log('script index');
