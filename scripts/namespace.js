@@ -13,9 +13,10 @@ const handlers = {};
 
 /**
  * Register callback for when event occurs.
+ * `undefined` event name is called for every event.
  *
- * @param {string}    event
- * @param {Function}  handler
+ * @param {string}    event name
+ * @param {Function}  handler to call
  * @returns {Function} to remove handler, for deconstructing
  */
 function registerListener(event, handler) {
@@ -36,9 +37,10 @@ function registerListener(event, handler) {
  */
 export function emit(event, data) {
   const hs = handlers[event];
-  if (!hs) return;
+  const allHs = handlers[undefined];
 
-  hs.forEach((h) => h && h.call(undefined, data));
+  if (hs) hs.forEach((h) => h && h.call(undefined, data));
+  if (allHs) allHs.forEach((h) => h && h.call(undefined, event, data));
 }
 
 /**

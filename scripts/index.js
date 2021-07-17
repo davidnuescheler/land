@@ -147,6 +147,7 @@ export async function insertLocalResource(type) {
  * @param {string} selector
  */
 export function externalLinks(selector) {
+  emit('externalLinks', { selector });
   const element = document.querySelector(selector);
   const links = element.querySelectorAll('a[href]');
 
@@ -470,7 +471,18 @@ export function styleButtons() {
   });
 }
 
+function setupTestMode() {
+  if (window.location.search.indexOf('test') === -1) {
+    return;
+  }
+  // do whatever for testing mode..
+  // right now just logging junk
+  window.pages.on(undefined, console.debug);
+}
+
 async function decoratePage() {
+  initializeNamespaces();
+  setupTestMode();
   loadTemplate();
   document.title = document.title.split('<br>').join(' ');
   fixImages();
@@ -483,5 +495,4 @@ async function decoratePage() {
 }
 
 console.log('script index');
-initializeNamespaces();
 decoratePage();
