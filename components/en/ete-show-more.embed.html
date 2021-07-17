@@ -21,7 +21,7 @@
 </div>
 
 
-<script defer>
+<script>
   async function fetchSteps() {
     window.hlx.dependencies.push('steps.json');
     const resp=await fetch('steps.json');
@@ -131,11 +131,12 @@
 
   }
 
-  console.log('ete show more...')
-  // document.addEventListener("DOMContentLoaded", function(){
-  //   filterSteps();
-  //   setUpFiles();
-  // });
-  filterSteps();
-  setUpFiles();
+  console.log('ete show more...');
+  document.addEventListener("DOMContentLoaded", function(){
+    console.log('ete show more loaded...');
+    filterSteps();
+    setUpFiles();
+  });
+  // filterSteps();
+  // setUpFiles();
 </script>
