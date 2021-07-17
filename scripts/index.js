@@ -148,7 +148,10 @@ export async function insertLocalResource(type) {
  */
 export function externalLinks(selector) {
   emit('externalLinks', { selector });
+
   const element = document.querySelector(selector);
+  if (!element) return;
+
   const links = element.querySelectorAll('a[href]');
 
   links.forEach((linkItem) => {
