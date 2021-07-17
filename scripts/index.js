@@ -10,7 +10,7 @@
  * governing permissions and limitations under the License.
  */
 
-import { emit, initializeNamespaces } from './namespace';
+import { emit, initializeNamespaces } from './namespace.js';
 
 /**
  * Add dependency urls that should be published with Sidekick.
