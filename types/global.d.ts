@@ -1,7 +1,21 @@
 declare global {
   interface Window { 
+
+    /**
+     * Common, always available namespace
+     */
     pages: PagesNamespace; 
+
+    /**
+     * Current form configuration object
+     */
     formConfig: FormConfig;
+
+    /**
+     * Loads a CSS file.
+     * @param {string} href The path to the CSS file
+     */
+    loadCSS(href: string): void;
   }
 }
 
@@ -21,9 +35,9 @@ interface FormConfig {
    */
   redirect: string;
   /**
-   * Form config url
+   * Form definition object
    */
-  form: string;
+  definition: string;
 }
 
 export {};
